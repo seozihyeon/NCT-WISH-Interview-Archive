@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback } from 'react';
 import AnimatedBackground from './components/AnimatedBackground';
 import NctWishLogo from './components/NctWishLogo';
@@ -23,13 +22,12 @@ const App: React.FC = () => {
   }, [query]);
 
   const quickLinks = [
-    //{ label: 'Sion', color: 'bg-purple-400', search: 'Sion (NCT WISH) news' },
-    { color: 'bg-purple-400', search: 'Sion (NCT WISH) news' },
-    { color: 'bg-red-400', search: 'Riku (NCT WISH) performance' },
-    { color: 'bg-blue-400', search: 'Yushi (NCT WISH) photos' },
-    { color: 'bg-green-400', search: 'Jaehee (NCT WISH) facts' },
-    { color: 'bg-yellow-400', search: 'Ryo (NCT WISH) profile' },
-    { color: 'bg-pink-400', search: 'Sakuya (NCT WISH) cute moments' },
+    { color: '#877FF6', search: 'Sion (NCT WISH) news' },
+    { color: '#FF7073', search: 'Riku (NCT WISH) performance' },
+    { color: '#46A9FF', search: 'Yushi (NCT WISH) photos' },
+    { color: '#5CE27E', search: 'Jaehee (NCT WISH) facts' },
+    { color: '#FADF72', search: 'Ryo (NCT WISH) profile' },
+    { color: '#F99CEC', search: 'Sakuya (NCT WISH) cute moments' },
   ];
 
   return (
@@ -71,28 +69,39 @@ const App: React.FC = () => {
 
         {/* Quick Link Stars */}
         <div className="flex flex-wrap justify-center gap-6">
-          {quickLinks.map((link, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                  setQuery(link.search);
-                  handleSearch();
-              }}
-              className="group flex flex-col items-center gap-3"
-            >
-              <div className={`
-                ${link.color} w-16 h-16 rounded-full flex items-center justify-center
-                shadow-[0_6px_0_rgba(0,0,0,0.05)] group-hover:shadow-none group-hover:translate-y-1
-                transition-all transform active:scale-95 border-4 border-white
-              `}>
-                <Star className="text-white" fill="white" size={28} />
-              </div>
-              <span className="text-sm font-bold text-gray-600 group-hover:text-blue-500 transition-colors uppercase tracking-widest bg-white/50 px-2 rounded-md">
-                {link.label}
-              </span>
-            </button>
-          ))}
-        </div>
+  {quickLinks.map((link, idx) => (
+    <button
+      key={idx}
+      onClick={() => {
+        setQuery(link.search);
+        handleSearch();
+      }}
+      className="group flex flex-col items-center gap-3"
+    >
+      <div
+        className="
+          bg-white w-16 h-16 rounded-full
+          flex items-center justify-center
+          shadow-[0_6px_0_rgba(0,0,0,0.05)]
+          group-hover:shadow-none group-hover:translate-y-1
+          transition-all transform active:scale-95
+          border-4 border-white
+        "
+      >
+        <Star
+            size={40}
+            strokeWidth={2.5}
+            fill={link.color}
+            stroke={link.color}
+            className="
+        transition-transform duration-200
+        group-hover:scale-110
+      "
+/>
+      </div>
+    </button>
+  ))}
+</div>
       </main>
 
       {/* Result Modal */}
