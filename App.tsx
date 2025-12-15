@@ -34,7 +34,7 @@ const App: React.FC = () => {
     <div className="min-h-screen w-full relative flex flex-col items-center justify-center p-4">
       <AnimatedBackground />
 
-      <main className="w-full max-w-2xl flex flex-col items-center gap-12 z-10">
+    <main className="w-full max-w-2xl flex flex-col items-center gap-8 -translate-y-">
         {/* Logo Section */}
         <div className="animate-bounce-slow">
             <NctWishLogo />
@@ -46,7 +46,7 @@ const App: React.FC = () => {
           className="w-full relative group"
         >
           <div className="absolute inset-0 bg-blue-300 opacity-10 blur-2xl group-focus-within:opacity-30 transition-opacity rounded-full"></div>
-          <div className="relative flex items-center bg-white/90 backdrop-blur-sm border-2 border-white rounded-full shadow-xl p-2 focus-within:ring-4 focus-within:ring-white/50 transition-all">
+          <div className="relative flex items-center bg-white/90 backdrop-blur-sm border-2 border-white rounded-full p-2 focus-within:ring-4 focus-within:ring-white/50 transition-all">
             <input
               type="text"
               value={query}
@@ -65,7 +65,13 @@ const App: React.FC = () => {
         </form>
 
         {/* Quick Link Stars */}
-        <div className="flex flex-wrap justify-center gap-6">
+        <div
+          className="
+            grid grid-cols-3 gap-6
+            justify-items-center
+            md:flex md:flex-wrap md:justify-center
+          "
+          >
   {quickLinks.map((link, idx) => (
     <button
       key={idx}

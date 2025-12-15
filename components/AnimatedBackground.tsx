@@ -1,7 +1,7 @@
 import React from 'react';
 // 💡 1. Background.png 파일을 import 합니다. (assets 폴더에 있다고 가정)
 // 파일 구조 상 '../assets/Background.png' 경로는 올바릅니다.
-import BackgroundImagePath from '../assets/Background2.png'; 
+import BackgroundImagePath from '../assets/Background.png'; 
 
 const StarSVG: React.FC<{
   color: string;
