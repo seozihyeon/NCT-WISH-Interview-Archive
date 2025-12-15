@@ -47,9 +47,6 @@ const App: React.FC = () => {
         >
           <div className="absolute inset-0 bg-blue-300 opacity-10 blur-2xl group-focus-within:opacity-30 transition-opacity rounded-full"></div>
           <div className="relative flex items-center bg-white/90 backdrop-blur-sm border-2 border-white rounded-full shadow-xl p-2 focus-within:ring-4 focus-within:ring-white/50 transition-all">
-            <div className="pl-4 text-blue-300">
-              <Search size={24} />
-            </div>
             <input
               type="text"
               value={query}
@@ -60,7 +57,7 @@ const App: React.FC = () => {
             <button 
               type="submit"
               disabled={loading}
-              className="bg-blue-400 hover:bg-blue-500 text-white rounded-full p-3 transition-colors disabled:bg-gray-300 shadow-md"
+              className="bg-blue-200 hover:bg-blue-500 text-white rounded-full p-3 transition-colors disabled:bg-gray-300 shadow-md"
             >
               {loading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
             </button>
