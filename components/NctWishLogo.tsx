@@ -3,7 +3,7 @@ import React from 'react';
 // 💡 수정된 부분 1: 로고 파일을 import 합니다.
 // 컴포넌트 파일(components/NctWishLogo.tsx)에서 
 // assets/NCTWISH.png 파일로 상대 경로를 설정합니다.
-import NctWishLogoPath from '../assets/NCTWISH.png'; 
+import NctWishLogoPath from '../assets/LOGO_bright.png'; 
 // ----------------------------------------------------
 
 const NctWishLogo: React.FC = () => {

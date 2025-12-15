@@ -1,20 +1,30 @@
 import React from 'react';
 // 💡 1. Background.png 파일을 import 합니다. (assets 폴더에 있다고 가정)
 // 파일 구조 상 '../assets/Background.png' 경로는 올바릅니다.
-import BackgroundImagePath from '../assets/Background.png'; 
+import BackgroundImagePath from '../assets/Background2.png'; 
 
-const StarSVG: React.FC<{ color: string; size: number; className?: string; style?: React.CSSProperties }> = ({ color, size, className, style }) => (
-  <svg 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill={color} 
-    className={`opacity-40 pointer-events-none ${className}`}
-    style={style}
-  >
-    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-  </svg>
+const StarSVG: React.FC<{
+  color: string;
+  size: number;
+  className?: string;
+  style?: React.CSSProperties;
+}> = ({ color, size, className, style }) => (
+  <svg
+    width={size}   // ⭐ 여기서 키움
+    height={size}
+    viewBox="0 0 30 30"
+    fill={color}
+    className={`opacity-60 pointer-events-none ${className}`}
+    stroke={color}
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={style}
+  >
+    <path d="M12 2l3.09 6.26l6.91 1l-5 4.86l1.18 6.88L12 17.27l-6.18 3.23l1.18-6.88l-5-4.86l6.91-1L12 2z" />
+  </svg>
 );
+
 
 const AnimatedBackground: React.FC = () => {
   return (
@@ -29,12 +39,12 @@ const AnimatedBackground: React.FC = () => {
       }}
     >
       {/* Floating Stars (별 모양은 그대로 유지) */}
-      <StarSVG color="#fca5a5" size={120} className="absolute top-[10%] left-[5%] floating-star" />
-      <StarSVG color="#93c5fd" size={80} className="absolute top-[5%] right-[10%] floating-star" style={{ animationDelay: '1s' }} />
-      <StarSVG color="#fde047" size={60} className="absolute bottom-[20%] left-[15%] floating-star" style={{ animationDelay: '2s' }} />
-      <StarSVG color="#f472b6" size={150} className="absolute bottom-[5%] right-[5%] floating-star" style={{ animationDelay: '0.5s' }} />
-      <StarSVG color="#c084fc" size={40} className="absolute top-[40%] right-[30%] floating-star" style={{ animationDelay: '3s' }} />
-      <StarSVG color="#4ade80" size={50} className="absolute bottom-[40%] left-[40%] floating-star" style={{ animationDelay: '1.5s' }} />
+      <StarSVG color="#FFB1B1" size={120} className="absolute top-[10%] left-[5%] floating-star" />
+      <StarSVG color="#FFD8D8" size={80} className="absolute top-[5%] right-[10%] floating-star" style={{ animationDelay: '1s' }} />
+      <StarSVG color="#9DE5F7" size={60} className="absolute bottom-[20%] left-[15%] floating-star" style={{ animationDelay: '2s' }} />
+      <StarSVG color="#FFB1B1" size={150} className="absolute bottom-[5%] right-[5%] floating-star" style={{ animationDelay: '0.5s' }} />
+      <StarSVG color="#9DE5F7" size={40} className="absolute top-[40%] right-[30%] floating-star" style={{ animationDelay: '3s' }} />
+      <StarSVG color="#FFB1B1" size={50} className="absolute bottom-[40%] left-[40%] floating-star" style={{ animationDelay: '1.5s' }} />
     </div>
   );
 };
