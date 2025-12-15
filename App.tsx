@@ -23,12 +23,13 @@ const App: React.FC = () => {
   }, [query]);
 
   const quickLinks = [
-    { label: 'Sion', color: 'bg-purple-400', search: 'Sion (NCT WISH) news' },
-    { label: 'Riku', color: 'bg-red-400', search: 'Riku (NCT WISH) performance' },
-    { label: 'Yushi', color: 'bg-blue-400', search: 'Yushi (NCT WISH) photos' },
-    { label: 'Jaehee', color: 'bg-green-400', search: 'Jaehee (NCT WISH) facts' },
-    { label: 'Ryo', color: 'bg-yellow-400', search: 'Ryo (NCT WISH) profile' },
-    { label: 'Sakuya', color: 'bg-pink-400', search: 'Sakuya (NCT WISH) cute moments' },
+    //{ label: 'Sion', color: 'bg-purple-400', search: 'Sion (NCT WISH) news' },
+    { color: 'bg-purple-400', search: 'Sion (NCT WISH) news' },
+    { color: 'bg-red-400', search: 'Riku (NCT WISH) performance' },
+    { color: 'bg-blue-400', search: 'Yushi (NCT WISH) photos' },
+    { color: 'bg-green-400', search: 'Jaehee (NCT WISH) facts' },
+    { color: 'bg-yellow-400', search: 'Ryo (NCT WISH) profile' },
+    { color: 'bg-pink-400', search: 'Sakuya (NCT WISH) cute moments' },
   ];
 
   return (
