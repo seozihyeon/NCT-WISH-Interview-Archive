@@ -1,0 +1,175 @@
+
+import React, { useState, useCallback } from 'react';
+import AnimatedBackground from './components/AnimatedBackground';
+import NctWishLogo from './components/NctWishLogo';
+import { performWishSearch, SearchResult } from './services/geminiService';
+import { Search, Star, Loader2, ExternalLink, X } from 'lucide-react';
+
+const App: React.FC = () => {
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<SearchResult | null>(null);
+  const [showResultModal, setShowResultModal] = useState(false);
+
+  const handleSearch = useCallback(async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!query.trim()) return;
+
+    setLoading(true);
+    const searchRes = await performWishSearch(query);
+    setResult(searchRes);
+    setLoading(false);
+    setShowResultModal(true);
+  }, [query]);
+
+  const quickLinks = [
+    { label: 'Sion', color: 'bg-purple-400', search: 'Sion (NCT WISH) news' },
+    { label: 'Riku', color: 'bg-red-400', search: 'Riku (NCT WISH) performance' },
+    { label: 'Yushi', color: 'bg-blue-400', search: 'Yushi (NCT WISH) photos' },
+    { label: 'Jaehee', color: 'bg-green-400', search: 'Jaehee (NCT WISH) facts' },
+    { label: 'Ryo', color: 'bg-yellow-400', search: 'Ryo (NCT WISH) profile' },
+    { label: 'Sakuya', color: 'bg-pink-400', search: 'Sakuya (NCT WISH) cute moments' },
+  ];
+
+  return (
+    <div className="min-h-screen w-full relative flex flex-col items-center justify-center p-4">
+      <AnimatedBackground />
+
+      <main className="w-full max-w-2xl flex flex-col items-center gap-12 z-10">
+        {/* Logo Section */}
+        <div className="animate-bounce-slow">
+            <NctWishLogo />
+        </div>
+
+        {/* Search Section */}
+        <form 
+          onSubmit={handleSearch}
+          className="w-full relative group"
+        >
+          <div className="absolute inset-0 bg-blue-300 opacity-10 blur-2xl group-focus-within:opacity-30 transition-opacity rounded-full"></div>
+          <div className="relative flex items-center bg-white/90 backdrop-blur-sm border-2 border-white rounded-full shadow-xl p-2 focus-within:ring-4 focus-within:ring-white/50 transition-all">
+            <div className="pl-4 text-blue-300">
+              <Search size={24} />
+            </div>
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="인터뷰 키워드 검색..."
+              className="w-full bg-transparent border-none outline-none px-4 py-3 text-lg text-gray-700 placeholder:text-gray-300 font-medium"
+            />
+            <button 
+              type="submit"
+              disabled={loading}
+              className="bg-blue-400 hover:bg-blue-500 text-white rounded-full p-3 transition-colors disabled:bg-gray-300 shadow-md"
+            >
+              {loading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
+            </button>
+          </div>
+        </form>
+
+        {/* Quick Link Stars */}
+        <div className="flex flex-wrap justify-center gap-6">
+          {quickLinks.map((link, idx) => (
+            <button
+              key={idx}
+              onClick={() => {
+                  setQuery(link.search);
+                  handleSearch();
+              }}
+              className="group flex flex-col items-center gap-3"
+            >
+              <div className={`
+                ${link.color} w-16 h-16 rounded-full flex items-center justify-center
+                shadow-[0_6px_0_rgba(0,0,0,0.05)] group-hover:shadow-none group-hover:translate-y-1
+                transition-all transform active:scale-95 border-4 border-white
+              `}>
+                <Star className="text-white" fill="white" size={28} />
+              </div>
+              <span className="text-sm font-bold text-gray-600 group-hover:text-blue-500 transition-colors uppercase tracking-widest bg-white/50 px-2 rounded-md">
+                {link.label}
+              </span>
+            </button>
+          ))}
+        </div>
+      </main>
+
+      {/* Result Modal */}
+      {showResultModal && result && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/30 backdrop-blur-md">
+          <div className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl flex flex-col max-h-[85vh] overflow-hidden border-8 border-white/80 animate-in fade-in zoom-in duration-300">
+            <div className="flex justify-between items-center p-8 border-b border-gray-50 bg-gradient-to-r from-blue-50/50 to-pink-50/50">
+              <h2 className="text-2xl font-black text-blue-500 flex items-center gap-3">
+                <div className="bg-yellow-400 p-2 rounded-xl">
+                  <Star className="text-white" fill="white" size={18} />
+                </div>
+                WISH Search Result
+              </h2>
+              <button 
+                onClick={() => setShowResultModal(false)}
+                className="p-3 hover:bg-gray-100 rounded-2xl transition-colors"
+              >
+                <X size={24} className="text-gray-400" />
+              </button>
+            </div>
+            
+            <div className="p-8 overflow-y-auto space-y-8 custom-scrollbar">
+              <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed text-lg whitespace-pre-wrap font-medium">
+                {result.text}
+              </div>
+
+              {result.sources.length > 0 && (
+                <div className="pt-8 border-t border-gray-100">
+                  <h3 className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Discovery Sources</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {result.sources.map((source, i) => (
+                      <a
+                        key={i}
+                        href={source.uri}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 bg-blue-50/50 text-blue-600 px-4 py-2 rounded-2xl text-xs font-bold hover:bg-blue-100 transition-all border border-blue-100/50 shadow-sm"
+                      >
+                        {source.title.length > 35 ? source.title.substring(0, 35) + '...' : source.title}
+                        <ExternalLink size={12} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="p-6 bg-gray-50/50 text-center">
+              <button 
+                onClick={() => setShowResultModal(false)}
+                className="bg-blue-400 text-white px-12 py-3 rounded-full font-black hover:bg-blue-500 transition-all shadow-lg active:scale-95"
+              >
+                CLOSE 💚
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Footer Decoration */}
+      <footer className="fixed bottom-6 text-gray-400 text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">
+        {/* NCT WISH Official Portal Concept • 2024 */}
+      </footer>
+
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #e2e8f0;
+          border-radius: 10px;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default App;
