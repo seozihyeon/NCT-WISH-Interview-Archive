@@ -1,0 +1,7 @@
+{
+  "name": "NCT WISH",
+  "description": "A high-performance, multi-modal creative workstation powered by Gemini. Generate stunning images, engage in deep reasoning with real-time search, and analyze visual data through a sleek, futuristic interface.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
