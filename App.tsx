@@ -1,10 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import AnimatedBackground from './components/AnimatedBackground';
 import NctWishLogo from './components/NctWishLogo';
+import GalleryView from './components/GalleryView';
 import { performWishSearch, SearchResult } from './services/geminiService';
-import { Search, Star, Loader2, ExternalLink, X } from 'lucide-react';
+import { Search, Star, Loader2, ExternalLink, X, ArrowLeft } from 'lucide-react';
+
+type ViewState = 'HOME' | 'GALLERY';
 
 const App: React.FC = () => {
+  const [view, setView] = useState<ViewState>('HOME');
+  const [activeMember, setActiveMember] = useState<string>('');
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SearchResult | null>(null);
@@ -22,22 +27,45 @@ const App: React.FC = () => {
   }, [query]);
 
   const quickLinks = [
-    { color: '#877FF6', search: 'Sion (NCT WISH) news' },
-    { color: '#FF7073', search: 'Riku (NCT WISH) performance' },
-    { color: '#46A9FF', search: 'Yushi (NCT WISH) photos' },
-    { color: '#5CE27E', search: 'Jaehee (NCT WISH) facts' },
-    { color: '#FADF72', search: 'Ryo (NCT WISH) profile' },
-    { color: '#F99CEC', search: 'Sakuya (NCT WISH) cute moments' },
+    { name: 'SION', color: '#877FF6', search: 'Sion (NCT WISH) news' },
+    { name: 'RIKU', color: '#FF7073', search: 'Riku (NCT WISH) performance' },
+    { name: 'YUSHI', color: '#46A9FF', search: 'Yushi (NCT WISH) photos' },
+    { name: 'JAEHEE', color: '#5CE27E', search: 'Jaehee (NCT WISH) facts' },
+    { name: 'RYO', color: '#FADF72', search: 'Ryo (NCT WISH) profile' },
+    { name: 'SAKUYA', color: '#F99CEC', search: 'Sakuya (NCT WISH) cute moments' },
   ];
 
+  const handleMemberClick = (name: string) => {
+    setActiveMember(name);
+    setView('GALLERY');
+  };
+
+  // 갤러리 뷰 모드
+  if (view === 'GALLERY') {
+    return (
+      <div className="min-h-screen w-full relative">
+        <AnimatedBackground />
+        <button 
+          onClick={() => setView('HOME')}
+          className="fixed top-6 left-6 z-50 p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-lg hover:bg-white transition-all group border-2 border-white"
+          aria-label="Back to Home"
+        >
+          <ArrowLeft size={24} className="text-blue-500 group-hover:-translate-x-1 transition-transform" />
+        </button>
+        <GalleryView memberName={activeMember} />
+      </div>
+    );
+  }
+
+  // 홈(검색) 뷰 모드
   return (
     <div className="min-h-screen w-full relative flex flex-col items-center justify-center p-4">
       <AnimatedBackground />
 
-    <main className="w-full max-w-2xl flex flex-col items-center gap-8 -translate-y-">
+      <main className="w-full max-w-2xl flex flex-col items-center gap-8">
         {/* Logo Section */}
-        <div className="animate-bounce-slow">
-            <NctWishLogo />
+        <div className="animate-bounce-slow cursor-pointer" onClick={() => setView('HOME')}>
+          <NctWishLogo />
         </div>
 
         {/* Search Section */}
@@ -51,7 +79,7 @@ const App: React.FC = () => {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="인터뷰 키워드 검색..."
+              placeholder="인터뷰 키워드 또는 멤버 소식 검색..."
               className="w-full bg-transparent border-none outline-none px-4 py-3 text-lg text-gray-700 placeholder:text-gray-300 font-medium"
             />
             <button 
@@ -64,47 +92,45 @@ const App: React.FC = () => {
           </div>
         </form>
 
-        {/* Quick Link Stars */}
-        <div
-          className="
-            grid grid-cols-3 gap-6
-            justify-items-center
-            md:flex md:flex-wrap md:justify-center
-          "
-          >
-  {quickLinks.map((link, idx) => (
-    <button
-      key={idx}
-      onClick={() => {
-        setQuery(link.search);
-        handleSearch();
-      }}
-      className="group flex flex-col items-center gap-3"
-    >
-      <div
-        className="
-          bg-white w-16 h-16 rounded-full
-          flex items-center justify-center
-          shadow-[0_6px_0_rgba(0,0,0,0.05)]
-          group-hover:shadow-none group-hover:translate-y-1
-          transition-all transform active:scale-95
-          border-4 border-white
-        "
-      >
-        <Star
-            size={40}
-            strokeWidth={2.5}
-            fill={link.color}
-            stroke={link.color}
-            className="
-        transition-transform duration-200
-        group-hover:scale-110
-      "
-/>
-      </div>
-    </button>
-  ))}
-</div>
+        {/* Quick Link Stars (갤러리 연결) */}
+        <div className="grid grid-cols-3 gap-6 justify-items-center md:flex md:flex-wrap md:justify-center">
+          {quickLinks.map((link, idx) => (
+            <button
+              key={idx}
+              onClick={() => handleMemberClick(link.name)}
+              className="group flex flex-col items-center gap-3"
+            >
+              <div
+                className="
+                  bg-white w-16 h-16 rounded-full
+                  flex items-center justify-center
+                  shadow-[0_6px_0_rgba(0,0,0,0.05)]
+                  group-hover:shadow-none group-hover:translate-y-1
+                  transition-all transform active:scale-95
+                  border-4 border-white
+                "
+              >
+                <Star
+                  size={40}
+                  strokeWidth={2.5}
+                  fill={link.color}
+                  stroke={link.color}
+                  className="transition-transform duration-200 group-hover:scale-110"
+                />
+              </div>
+              <span
+                className="text-[10px] font-black tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity uppercase"
+                style={{
+                  color: link.color,
+                  textShadow: `0 0 6px ${link.color}66`,
+                }}
+              >
+                {link.name}
+              </span>
+
+            </button>
+          ))}
+        </div>
       </main>
 
       {/* Result Modal */}
@@ -163,11 +189,6 @@ const App: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Footer Decoration */}
-      <footer className="fixed bottom-6 text-gray-400 text-[10px] font-black tracking-[0.3em] opacity-40 uppercase">
-        {/* NCT WISH Official Portal Concept • 2024 */}
-      </footer>
 
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
